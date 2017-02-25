@@ -57,22 +57,21 @@ class donutappView extends Ui.WatchFace {
 
 		// Update the view
 		var view = View.findDrawableById("TimeLabel");
-		view.setColor(App.getApp().getProperty("TimeColor"));
+		view.setColor(Gfx.COLOR_WHITE);
 		view.setText(timeString);
 		
 		updateDistance();
 
-		var calories = convertToCalories(metersToNearest);
-		drawDonuts(dc, calories);
-		
 		drawDistance();
 		
 		// Call the parent onUpdate function to redraw the layout
 		View.onUpdate(dc);
+
+		var calories = convertToCalories(metersToNearest);
+		drawDonuts(dc, calories);
 	}
 	
 	function convertToCalories(meters) {
-		return 12000;
 		// In one meter of running, the average american burns 0.07831 calories.
 		var caloriesLost = (meters * 0.07831).toNumber();
 		return caloriesLost > 0 ? caloriesLost : 0;
@@ -127,6 +126,7 @@ class donutappView extends Ui.WatchFace {
 			getPosition();
 			return;
 		}
+		// Leave this in until I find a better way to query Google
 		textToNearest = "we broke it";
 		return;
 		
@@ -267,6 +267,7 @@ class donutappView extends Ui.WatchFace {
 	
 	function drawDistance() {
 		var distanceView = View.findDrawableById("DistanceLabel");
+		// These are arbitrary right now. Find hard values someday
 		var CENTER = 75;
 		var BOTTOM = 175;
 		distanceView.setLocation(CENTER, (BOTTOM - 10));
