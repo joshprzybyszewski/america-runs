@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<debugInfo>
+<pcToLineNum>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="9" pc="268435456" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="10" pc="268435460" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="14" pc="268435479" symbol="onLayout"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="15" pc="268435483" symbol="onLayout"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="21" pc="268435521" symbol="onShow"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="25" pc="268435526" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="27" pc="268435530" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="28" pc="268435537" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="29" pc="268435554" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="30" pc="268435564" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="31" pc="268435589" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="32" pc="268435600" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="35" pc="268435616" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="36" pc="268435648" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="37" pc="268435655" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="40" pc="268435676" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="43" pc="268435741" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="44" pc="268435765" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="45" pc="268435806" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="48" pc="268435820" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="54" pc="268435841" symbol="onHide"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="58" pc="268435846" symbol="onExitSleep"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="62" pc="268435851" symbol="onEnterSleep"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="7" pc="268435856" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="8" pc="268435860" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="12" pc="268435881" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="15" pc="268435902" symbol="draw"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="17" pc="268435906" symbol="draw"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="18" pc="268435959" symbol="draw"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="6" pc="268435972" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="7" pc="268435976" symbol="initialize"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="11" pc="268435995" symbol="onStart"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="15" pc="268436000" symbol="onStop"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="19" pc="268436005" symbol="getInitialView"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="20" pc="268436009" symbol="getInitialView"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="24" pc="268436047" symbol="onSettingsChanged"/>
+<entry filename="C:\\Users\\Prezby\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="25" pc="268436051" symbol="onSettingsChanged"/>
+<entry filename="Rez" lineNum="27" pc="268436068" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="29" pc="268436072" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="30" pc="268436096" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="31" pc="268436259" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="32" pc="268436284" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="33" pc="268436336" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="36" pc="268436382" symbol="WatchFace"/>
+</pcToLineNum>
+<symbolTable>
+<entry id="8389124" method="true" symbol="onUpdate"/>
+<entry id="8389349" symbol="justification"/>
+<entry field="true" id="15" symbol="ColorBlue"/>
+<entry field="true" id="8388611" symbol="Toybox"/>
+<entry id="8388770" module="true" symbol="Strings"/>
+<entry field="true" id="22" symbol="ColorWhite"/>
+<entry id="8389280" method="true" symbol="getInitialView"/>
+<entry id="8389068" method="true" symbol="draw"/>
+<entry id="8389377" method="true" symbol="onExitSleep"/>
+<entry id="8388640" symbol="Lang"/>
+<entry field="true" id="21" symbol="ColorBlack"/>
+<entry id="8388769" module="true" symbol="Rez"/>
+<entry id="8389123" method="true" symbol="onShow"/>
+<entry field="true" id="16" symbol="ColorRed"/>
+<entry field="true" id="17" symbol="ForegroundColorTitle"/>
+<entry id="8388702" method="true" symbol="initialize"/>
+<entry field="true" id="23" symbol="AppName"/>
+<entry id="8389375" method="true" symbol="WatchFace"/>
+<entry id="9" object="true" symbol="Background"/>
+<entry field="true" id="13" symbol="LauncherIcon"/>
+<entry id="8389683" method="true" symbol="onSettingsChanged"/>
+<entry id="8389281" method="true" symbol="onStop"/>
+<entry id="8389065" symbol="locY"/>
+<entry id="8389064" symbol="locX"/>
+<entry id="8388771" module="true" symbol="Drawables"/>
+<entry id="8389122" method="true" symbol="onLayout"/>
+<entry field="true" id="19" symbol="ColorDarkGray"/>
+<entry id="8389279" method="true" symbol="onStart"/>
+<entry id="8389376" method="true" symbol="onEnterSleep"/>
+<entry id="8389348" symbol="font"/>
+<entry field="true" id="14" symbol="ColorLightGray"/>
+<entry id="8389347" symbol="color"/>
+<entry field="true" id="18" symbol="BackgroundColorTitle"/>
+<entry id="12" module="true" symbol="Layouts"/>
+<entry id="8" object="true" symbol="donutappView"/>
+<entry id="8389125" method="true" symbol="onHide"/>
+<entry field="true" id="20" symbol="MilitaryFormatTitle"/>
+<entry id="8389063" symbol="identifier"/>
+<entry id="11" module="true" symbol="Menus"/>
+<entry id="8388772" module="true" symbol="Fonts"/>
+<entry id="10" object="true" symbol="donutappApp"/>
+</symbolTable>
+<localVars>
+<entry endPc="268435840" name="view" stackId="6" startPc="268435530"/>
+<entry endPc="268435840" name="hours" stackId="4" startPc="268435530"/>
+<entry endPc="268435840" name="timeString" stackId="5" startPc="268435530"/>
+<entry endPc="268435840" name="clockTime" stackId="3" startPc="268435530"/>
+<entry endPc="268435840" name="timeFormat" stackId="2" startPc="268435530"/>
+<entry endPc="268435901" name="dictionary" stackId="1" startPc="268435860"/>
+<entry endPc="268436409" name="rez_cmp_local_bitmap_TimeLabel" stackId="3" startPc="268436072"/>
+<entry endPc="268436409" name="rez_cmp_local_bitmap_TimeLabel_fontHeight" stackId="4" startPc="268436072"/>
+<entry endPc="268436409" name="rez_cmp_local_custom_drawable_ZAKCCUQZ1Y7NNJFPWVE6" stackId="2" startPc="268436072"/>
+</localVars>
+<annotations/>
+<functions>
+<functionEntry name="initialize" parent="donutappView">
+<documentation/>
+</functionEntry>
+<functionEntry name="onLayout" parent="donutappView">
+<param id="dc"/>
+<documentation/>
+</functionEntry>
+<functionEntry name="onShow" parent="donutappView">
+<documentation/>
+</functionEntry>
+<functionEntry name="onUpdate" parent="donutappView">
+<param id="dc"/>
+<documentation/>
+</functionEntry>
+<functionEntry name="onHide" parent="donutappView">
+<documentation/>
+</functionEntry>
+<functionEntry name="onExitSleep" parent="donutappView">
+<documentation/>
+</functionEntry>
+<functionEntry name="onEnterSleep" parent="donutappView">
+<documentation/>
+</functionEntry>
+<functionEntry name="initialize" parent="Background">
+<documentation/>
+</functionEntry>
+<functionEntry name="draw" parent="Background">
+<param id="dc"/>
+<documentation/>
+</functionEntry>
+<functionEntry name="initialize" parent="donutappApp">
+<documentation/>
+</functionEntry>
+<functionEntry name="onStart" parent="donutappApp">
+<param id="state"/>
+<documentation/>
+</functionEntry>
+<functionEntry name="onStop" parent="donutappApp">
+<param id="state"/>
+<documentation/>
+</functionEntry>
+<functionEntry name="getInitialView" parent="donutappApp">
+<documentation/>
+</functionEntry>
+<functionEntry name="onSettingsChanged" parent="donutappApp">
+<documentation/>
+</functionEntry>
+<functionEntry name="WatchFace" parent="Layouts">
+<param id="dc"/>
+<documentation><![CDATA[<div class="description"> Draw the layout<br/> param The context<br/></div>]]></documentation>
+</functionEntry>
+</functions>
+</debugInfo>
