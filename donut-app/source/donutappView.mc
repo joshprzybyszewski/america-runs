@@ -8,6 +8,7 @@ using Toybox.Communications as Comm;
 class donutappView extends Ui.WatchFace {
 	// A good response from a server is 200
 	const OK_RESPONSE_CODE = 200;
+	var myDonutIcon;
 
 	// The Google place_id of the nearest dunkin donuts
 	var nearestPlaceId = null;
@@ -27,6 +28,7 @@ class donutappView extends Ui.WatchFace {
 	// Load your resources here
 	function onLayout(dc) {
 		setLayout(Rez.Layouts.MainLayout(dc));
+    myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
 	}
 
 	// Called when this View is brought to the foreground. Restore
@@ -63,7 +65,37 @@ class donutappView extends Ui.WatchFace {
 		
 		// Call the parent onUpdate function to redraw the layout
 		View.onUpdate(dc);
+    
+        //12872 is a test number for distance traveled in meters. The real variable will be the meters to the nearest DD.
+        var calories = caloriesBurned(12872);
+        drawDonuts(dc, calories);
+    }
+    
+    function caloriesBurned( meters){
+    	// In one meter of running, the average american burns 0.07831 calories.
+    	var caloriesLost = (meters * 0.07831).toNumber();
+    	return caloriesLost; 
+    
+    }
+
+	function drawDonuts(dc, calories){
+		var donutCount = calories / 200; //Divides by 200 to find out how many full donuts you've burned in calories.
+		var numDisplayed = 0;
+		var rowLength = 5;
+		
+		//Rounds to the next donut if you are 15 or less calories away from 200 burned.
+		if((calories % 200) >= 185){
+			donutCount += 1;
+		}
+		
+		for(var r = 0; numDisplayed < donutCount; r++){
+			for(var c = 0; c < rowLength && numDisplayed < donutCount; c++){
+				 dc.drawBitmap((c * 30),(r * 30), myDonutIcon);
+				 numDisplayed++;
+			}
+		}
 	}
+	
 	
 	function updateDistance() {
 		if(posDegrees == null || posDegrees.size() != 2) {
