@@ -50,12 +50,15 @@ class donutappView extends Ui.WatchFace {
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        drawDonuts(dc, 450);
+        drawDonuts(dc, 585);
     }
 
 	function drawDonuts(dc, calories){
-		var calorieCount = calories / 200;
-		for(var i = 0; i < calorieCount; i++){
+		var donutCount = calories / 200;
+		if((calories % 200) >= 185){
+			donutCount += 1;
+		}
+		for(var i = 0; i < donutCount; i++){
 			dc.drawBitmap((i * 30),0, myDonutIcon);
 		}
 	}
