@@ -1,5 +1,5 @@
 <layout id="MainLayout">
     <drawable class="Background" />
     <label id="TimeLabel" x="center" y="0" font="Gfx.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_BLUE" />
-    <label id="DistanceLabel" x="0" y="50" font="Gfx.FONT_LARGE" color="Gfx.COLOR_BLUE" />
+    <label id="DistanceLabel" x="center" y="50" font="Gfx.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" color="Gfx.COLOR_BLUE" />
 </layout>
