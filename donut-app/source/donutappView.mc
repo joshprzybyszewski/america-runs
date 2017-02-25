@@ -5,6 +5,7 @@ using Toybox.Lang as Lang;
 using Toybox.Application as App;
 
 class donutappView extends Ui.WatchFace {
+	var myDonutIcon;
 
     function initialize() {
         WatchFace.initialize();
@@ -13,6 +14,7 @@ class donutappView extends Ui.WatchFace {
     // Load your resources here
     function onLayout(dc) {
         setLayout(Rez.Layouts.WatchFace(dc));
+        myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -27,6 +29,8 @@ class donutappView extends Ui.WatchFace {
         var timeFormat = "$1$:$2$";
         var clockTime = Sys.getClockTime();
         var hours = clockTime.hour;
+        
+        
         if (!Sys.getDeviceSettings().is24Hour) {
             if (hours > 12) {
                 hours = hours - 12;
@@ -46,7 +50,35 @@ class donutappView extends Ui.WatchFace {
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+        //12872 is a test number for distance traveled in meters. The real variable will be the meters to the nearest DD.
+        var calories = caloriesBurned(12872);
+        drawDonuts(dc, calories);
     }
+    
+    function caloriesBurned( meters){
+    	// In one meter of running, the average american burns 0.07831 calories.
+    	var caloriesLost = (meters * 0.07831).toNumber();
+    	return caloriesLost; 
+    
+    }
+
+	function drawDonuts(dc, calories){
+		var donutCount = calories / 200; //Divides by 200 to find out how many full donuts you've burned in calories.
+		var numDisplayed = 0;
+		var rowLength = 5;
+		
+		//Rounds to the next donut if you are 15 or less calories away from 200 burned.
+		if((calories % 200) >= 185){
+			donutCount += 1;
+		}
+		
+		for(var r = 0; numDisplayed < donutCount; r++){
+			for(var c = 0; c < rowLength && numDisplayed < donutCount; c++){
+				 dc.drawBitmap((c * 30),(r * 30), myDonutIcon);
+				 numDisplayed++;
+			}
+		}
+	}
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
@@ -61,5 +93,4 @@ class donutappView extends Ui.WatchFace {
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {
     }
-
 }
