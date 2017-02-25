@@ -23,34 +23,45 @@
 <entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="49" pc="268435849" symbol="onUpdate"/>
 <entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="52" pc="268435863" symbol="onUpdate"/>
 <entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="53" pc="268435883" symbol="onUpdate"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="56" pc="268435903" symbol="drawDonuts"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="57" pc="268435907" symbol="drawDonuts"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="58" pc="268435917" symbol="drawDonuts"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="59" pc="268435932" symbol="drawDonuts"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="66" pc="268435979" symbol="onHide"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="70" pc="268435984" symbol="onExitSleep"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="74" pc="268435989" symbol="onEnterSleep"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="7" pc="268435994" symbol="initialize"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="8" pc="268435998" symbol="initialize"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="12" pc="268436019" symbol="initialize"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="15" pc="268436040" symbol="draw"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="17" pc="268436044" symbol="draw"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="18" pc="268436097" symbol="draw"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="6" pc="268436110" symbol="initialize"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="7" pc="268436114" symbol="initialize"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="11" pc="268436133" symbol="onStart"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="15" pc="268436138" symbol="onStop"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="19" pc="268436143" symbol="getInitialView"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="20" pc="268436147" symbol="getInitialView"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="24" pc="268436185" symbol="onSettingsChanged"/>
-<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="25" pc="268436189" symbol="onSettingsChanged"/>
-<entry filename="Rez" lineNum="28" pc="268436206" symbol="WatchFace"/>
-<entry filename="Rez" lineNum="30" pc="268436210" symbol="WatchFace"/>
-<entry filename="Rez" lineNum="31" pc="268436234" symbol="WatchFace"/>
-<entry filename="Rez" lineNum="32" pc="268436397" symbol="WatchFace"/>
-<entry filename="Rez" lineNum="33" pc="268436422" symbol="WatchFace"/>
-<entry filename="Rez" lineNum="34" pc="268436474" symbol="WatchFace"/>
-<entry filename="Rez" lineNum="37" pc="268436520" symbol="WatchFace"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="54" pc="268435903" symbol="onUpdate"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="57" pc="268435920" symbol="caloriesBurned"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="59" pc="268435924" symbol="caloriesBurned"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="60" pc="268435943" symbol="caloriesBurned"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="64" pc="268435947" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="65" pc="268435951" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="66" pc="268435961" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="67" pc="268435968" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="69" pc="268435975" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="70" pc="268435992" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="72" pc="268436005" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="73" pc="268436021" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="74" pc="268436036" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="75" pc="268436062" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="76" pc="268436098" symbol="drawDonuts"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="84" pc="268436135" symbol="onHide"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="88" pc="268436140" symbol="onExitSleep"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappView.mc" lineNum="92" pc="268436145" symbol="onEnterSleep"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="7" pc="268436150" symbol="initialize"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="8" pc="268436154" symbol="initialize"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="12" pc="268436175" symbol="initialize"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="15" pc="268436196" symbol="draw"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="17" pc="268436200" symbol="draw"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappBackground.mc" lineNum="18" pc="268436253" symbol="draw"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="6" pc="268436266" symbol="initialize"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="7" pc="268436270" symbol="initialize"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="11" pc="268436289" symbol="onStart"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="15" pc="268436294" symbol="onStop"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="19" pc="268436299" symbol="getInitialView"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="20" pc="268436303" symbol="getInitialView"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="24" pc="268436341" symbol="onSettingsChanged"/>
+<entry filename="C:\\Users\\Andrew\\workspace\\america-runs\\donut-app\\source\\donutappApp.mc" lineNum="25" pc="268436345" symbol="onSettingsChanged"/>
+<entry filename="Rez" lineNum="28" pc="268436362" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="30" pc="268436366" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="31" pc="268436390" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="32" pc="268436553" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="33" pc="268436578" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="34" pc="268436630" symbol="WatchFace"/>
+<entry filename="Rez" lineNum="37" pc="268436676" symbol="WatchFace"/>
 </pcToLineNum>
 <symbolTable>
 <entry id="8389124" method="true" symbol="onUpdate"/>
@@ -87,29 +98,36 @@
 <entry id="8389347" symbol="color"/>
 <entry field="true" id="19" symbol="BackgroundColorTitle"/>
 <entry field="true" id="13" symbol="DonutIcon"/>
-<entry id="26" method="true" symbol="drawDonuts"/>
+<entry id="27" method="true" symbol="drawDonuts"/>
 <entry id="12" module="true" symbol="Layouts"/>
 <entry id="8" object="true" symbol="donutappView"/>
 <entry id="8389125" method="true" symbol="onHide"/>
 <entry field="true" id="21" symbol="MilitaryFormatTitle"/>
 <entry id="8389063" symbol="identifier"/>
 <entry id="11" module="true" symbol="Menus"/>
+<entry id="26" method="true" symbol="caloriesBurned"/>
 <entry id="8388772" module="true" symbol="Fonts"/>
 <entry id="10" object="true" symbol="donutappApp"/>
 <entry field="true" id="25" symbol="myDonutIcon"/>
 </symbolTable>
 <localVars>
-<entry endPc="268435902" name="view" stackId="6" startPc="268435573"/>
-<entry endPc="268435902" name="hours" stackId="4" startPc="268435573"/>
-<entry endPc="268435902" name="timeString" stackId="5" startPc="268435573"/>
-<entry endPc="268435902" name="clockTime" stackId="3" startPc="268435573"/>
-<entry endPc="268435902" name="timeFormat" stackId="2" startPc="268435573"/>
-<entry endPc="268435978" name="i" stackId="4" startPc="268435932"/>
-<entry endPc="268435978" name="calorieCount" stackId="3" startPc="268435907"/>
-<entry endPc="268436039" name="dictionary" stackId="1" startPc="268435998"/>
-<entry endPc="268436547" name="rez_cmp_local_bitmap_TimeLabel" stackId="3" startPc="268436210"/>
-<entry endPc="268436547" name="rez_cmp_local_custom_drawable_U7MNFOP6676YQ90YYKBG" stackId="2" startPc="268436210"/>
-<entry endPc="268436547" name="rez_cmp_local_bitmap_TimeLabel_fontHeight" stackId="4" startPc="268436210"/>
+<entry endPc="268435919" name="view" stackId="6" startPc="268435573"/>
+<entry endPc="268435919" name="hours" stackId="4" startPc="268435573"/>
+<entry endPc="268435919" name="timeString" stackId="5" startPc="268435573"/>
+<entry endPc="268435919" name="clockTime" stackId="3" startPc="268435573"/>
+<entry endPc="268435919" name="calories" stackId="7" startPc="268435573"/>
+<entry endPc="268435919" name="timeFormat" stackId="2" startPc="268435573"/>
+<entry endPc="268435946" name="caloriesLost" stackId="3" startPc="268435924"/>
+<entry endPc="268436121" name="c" stackId="8" startPc="268436062"/>
+<entry endPc="268436134" name="r" stackId="7" startPc="268436036"/>
+<entry endPc="268436134" name="numDisplayed" stackId="4" startPc="268435951"/>
+<entry endPc="268436134" name="rowLength" stackId="5" startPc="268435951"/>
+<entry endPc="268436134" name="rowCount" stackId="6" startPc="268435951"/>
+<entry endPc="268436134" name="donutCount" stackId="3" startPc="268435951"/>
+<entry endPc="268436195" name="dictionary" stackId="1" startPc="268436154"/>
+<entry endPc="268436703" name="rez_cmp_local_bitmap_TimeLabel" stackId="3" startPc="268436366"/>
+<entry endPc="268436703" name="rez_cmp_local_bitmap_TimeLabel_fontHeight" stackId="4" startPc="268436366"/>
+<entry endPc="268436703" name="rez_cmp_local_custom_drawable_GZ0URUWGKF8X6KM245Z0" stackId="2" startPc="268436366"/>
 </localVars>
 <annotations/>
 <functions>
@@ -125,6 +143,11 @@
 </functionEntry>
 <functionEntry name="onUpdate" parent="donutappView">
 <param id="dc"/>
+<documentation/>
+</functionEntry>
+<functionEntry name="caloriesBurned" parent="donutappView">
+<param id="dc"/>
+<param id="meters"/>
 <documentation/>
 </functionEntry>
 <functionEntry name="drawDonuts" parent="donutappView">

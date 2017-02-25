@@ -50,16 +50,31 @@ class donutappView extends Ui.WatchFace {
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
-        drawDonuts(dc, 585);
+        var calories = caloriesBurned(dc, 12872);
+        drawDonuts(dc, calories);
+    }
+    
+    function caloriesBurned(dc, meters){
+    	// In one meter of running, the average american burns 0.07831 calories.
+    	var caloriesLost = (meters * 0.07831).toNumber();
+    	return caloriesLost; 
+    
     }
 
 	function drawDonuts(dc, calories){
 		var donutCount = calories / 200;
+		var numDisplayed = 0;
+		var rowLength = 5;
+		
 		if((calories % 200) >= 185){
 			donutCount += 1;
 		}
-		for(var i = 0; i < donutCount; i++){
-			dc.drawBitmap((i * 30),0, myDonutIcon);
+		var rowCount = (donutCount / 5) + 1;
+		for(var r = 0; numDisplayed < donutCount; r++){
+			for(var c = 0; c < rowLength && numDisplayed < donutCount; c++){
+				 dc.drawBitmap((c * 30),(r * 30), myDonutIcon);
+				 numDisplayed++;
+			}
 		}
 	}
 
@@ -76,5 +91,4 @@ class donutappView extends Ui.WatchFace {
     // Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {
     }
-
 }
