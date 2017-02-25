@@ -5,6 +5,7 @@ using Toybox.Lang as Lang;
 using Toybox.Application as App;
 
 class donutappView extends Ui.WatchFace {
+	var myDonutIcon;
 
     function initialize() {
         WatchFace.initialize();
@@ -13,6 +14,7 @@ class donutappView extends Ui.WatchFace {
     // Load your resources here
     function onLayout(dc) {
         setLayout(Rez.Layouts.WatchFace(dc));
+        myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -27,6 +29,8 @@ class donutappView extends Ui.WatchFace {
         var timeFormat = "$1$:$2$";
         var clockTime = Sys.getClockTime();
         var hours = clockTime.hour;
+        
+        
         if (!Sys.getDeviceSettings().is24Hour) {
             if (hours > 12) {
                 hours = hours - 12;
@@ -46,7 +50,15 @@ class donutappView extends Ui.WatchFace {
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);
+        drawDonuts(dc, 450);
     }
+
+	function drawDonuts(dc, calories){
+		var calorieCount = calories / 200;
+		for(var i = 0; i < calorieCount; i++){
+			dc.drawBitmap((i * 30),0, myDonutIcon);
+		}
+	}
 
     // Called when this View is removed from the screen. Save the
     // state of this View here. This includes freeing resources from
