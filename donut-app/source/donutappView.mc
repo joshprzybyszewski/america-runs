@@ -28,7 +28,7 @@ class donutappView extends Ui.WatchFace {
 	// Load your resources here
 	function onLayout(dc) {
 		setLayout(Rez.Layouts.MainLayout(dc));
-    myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
+		myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
 	}
 
 	// Called when this View is brought to the foreground. Restore
@@ -61,27 +61,31 @@ class donutappView extends Ui.WatchFace {
 		view.setText(timeString);
 		
 		updateDistance();
+
+		var calories = convertToCalories(metersToNearest);
+		drawDonuts(dc, calories);
+		
 		drawDistance();
 		
 		// Call the parent onUpdate function to redraw the layout
 		View.onUpdate(dc);
-    
-        //12872 is a test number for distance traveled in meters. The real variable will be the meters to the nearest DD.
-        var calories = caloriesBurned(12872);
-        drawDonuts(dc, calories);
-    }
-    
-    function caloriesBurned( meters){
-    	// In one meter of running, the average american burns 0.07831 calories.
-    	var caloriesLost = (meters * 0.07831).toNumber();
-    	return caloriesLost; 
-    
-    }
+	}
+	
+	function convertToCalories(meters) {
+		return 12000;
+		// In one meter of running, the average american burns 0.07831 calories.
+		var caloriesLost = (meters * 0.07831).toNumber();
+		return caloriesLost > 0 ? caloriesLost : 0;
+	}
 
 	function drawDonuts(dc, calories){
 		var donutCount = calories / 200; //Divides by 200 to find out how many full donuts you've burned in calories.
 		var numDisplayed = 0;
-		var rowLength = 5;
+		var numPerRow = 4;
+		var LEFT_BUFFER = 5;
+		var TOP_BUFFER = 50;
+		var SPACE = 5;
+		var ICON_SIZE = 30;
 		
 		//Rounds to the next donut if you are 15 or less calories away from 200 burned.
 		if((calories % 200) >= 185){
@@ -89,13 +93,12 @@ class donutappView extends Ui.WatchFace {
 		}
 		
 		for(var r = 0; numDisplayed < donutCount; r++){
-			for(var c = 0; c < rowLength && numDisplayed < donutCount; c++){
-				 dc.drawBitmap((c * 30),(r * 30), myDonutIcon);
-				 numDisplayed++;
+			for(var c = 0; c < numPerRow && numDisplayed < donutCount; c++){
+				dc.drawBitmap(LEFT_BUFFER + (c * (ICON_SIZE + SPACE)), TOP_BUFFER + (r * (ICON_SIZE + SPACE)), myDonutIcon);
+				numDisplayed++;
 			}
 		}
 	}
-	
 	
 	function updateDistance() {
 		if(posDegrees == null || posDegrees.size() != 2) {
@@ -108,7 +111,7 @@ class donutappView extends Ui.WatchFace {
 	}
 	
 	function getPosition() {
-		Position.enableLocationEvents( Position.LOCATION_ONE_SHOT, method( :onPosition ) );
+		Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method( :onPosition ) );
 	}
 	
 	function onPosition(info) {
@@ -124,6 +127,8 @@ class donutappView extends Ui.WatchFace {
 			getPosition();
 			return;
 		}
+		textToNearest = "we broke it";
+		return;
 		
 		Comm.makeWebRequest( 
 			"https://maps.googleapis.com/maps/api/place/nearbysearch/json", 
@@ -143,6 +148,10 @@ class donutappView extends Ui.WatchFace {
 		if(checkResponse(responseCode, data) ) {
 			nearestPlaceId = null;
 			isOpen = false;
+			textToNearest = "None nearby";
+			metersToNearest = -1;
+
+			WatchUi.requestUpdate();
 			
 			return false;
 		}
@@ -207,6 +216,9 @@ class donutappView extends Ui.WatchFace {
 		if(checkResponse(responseCode, data) ) {
 			textToNearest = "None nearby";
 			metersToNearest = -1;
+			
+			WatchUi.requestUpdate();
+			
 			return false;
 		}
 
@@ -230,22 +242,23 @@ class donutappView extends Ui.WatchFace {
 
 		if(status.find("OK") == null) {//status is not OK
 			//There was some kind of error in the query
-			if(status.find("ZERO_RESULTS")) {
+			if(status.find("ZERO_RESULTS") != null) {
 				// No nearby Dunkin Donuts :(
 				System.println("There are no results for the query");
-			} else if(status.find("OVER_QUERY_LIMIT")) {
+			} else if(status.find("OVER_QUERY_LIMIT") != null) {
 				// You've queried too much...
 				System.println("You've requested too much!");
-			} else if(status.find("REQUEST_DENIED")) {
+			} else if(status.find("REQUEST_DENIED") != null) {
 				// You're probably using a bad key...
 				System.println("Are you using the right API key?");
-			} else if(status.find("INVALID_REQUEST")) {
+			} else if(status.find("INVALID_REQUEST") != null) {
 				// You sent something dumb, you idiot
 				System.println("check yourself. You sent a bad request, fool!");
 			} else {
 				// Unknown error
 				System.println("duh ffffuuuu??? " + status);
 			}
+			System.println("data: " + data);			
 			return 1;
 		}
 		
@@ -254,6 +267,9 @@ class donutappView extends Ui.WatchFace {
 	
 	function drawDistance() {
 		var distanceView = View.findDrawableById("DistanceLabel");
+		var CENTER = 75;
+		var BOTTOM = 175;
+		distanceView.setLocation(CENTER, (BOTTOM - 10));
 
 		if(textToNearest == null) {
 			// We haven't set the text to the nearest dunkin yet
