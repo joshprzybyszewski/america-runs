@@ -12,7 +12,7 @@ class donutappView extends Ui.WatchFace {
 	// Recheck for the nearest Dunkin Donuts every minute (60,000 milliseconds)
 	const CHECK_FOR_DD_TIME_MS = 15000;
 	// The google API key to request the nearby and distance matrix
-	const API_KEY = "";
+	const API_KEY = "AIzaSyDik3mzkY4f5yXnUkbSNi6eQtSL1haQ_sU";
 	var myDonutIcon;
 
 	// The Google place_id of the nearest dunkin donuts
@@ -132,7 +132,7 @@ class donutappView extends Ui.WatchFace {
 	}
 	
 	// Utility returns true when we have a place id for the nearest Dunkin
-	function hasNearest() {
+	function hasNearestDunkin() {
 		return nearestPlaceId != null;
 	}
 	
@@ -142,8 +142,8 @@ class donutappView extends Ui.WatchFace {
     function requestNearestDunkin(){
     	// Make sure we have the current GPS coords needed to calculate the nearest dunkin donuts
 		if(!hasPosition()) {
-			// We don't know where we are, so find out.
-			getPosition();
+			// We don't know where we are, so we'll have to wait to find out
+			System.println("Where the heck are we?");
 			return;
 		}
 		
@@ -222,7 +222,7 @@ class donutappView extends Ui.WatchFace {
 		// Make sure we have the needed information for the request
 		if(!hasPosition()) {
 			// We don't know where we are
-			getPosition();
+			System.println("Where the heck are we? PLZ tell me");
 			return;
 		} else if(!hasNearestDunkin()) {
 			// We don't know where we're going
