@@ -13,7 +13,13 @@ class donutappView extends Ui.WatchFace {
 	const CHECK_FOR_DD_TIME_MS = 15000;
 	// The google API key to request the nearby and distance matrix
 	const API_KEY = "";
-	var myDonutIcon;
+	// The average donut has 200 calories in it
+	const CALORIES_PER_DONUT = 200;
+	// In one meter of running, the average american burns 0.07831 calories.
+	const CALORIES_PER_METER = 0.07831;
+	// Just calculate this up here. Cool.
+	const DONUTS_PER_METER = CALORIES_PER_METER / CALORIES_PER_DONUT;
+
 
 	// The Google place_id of the nearest dunkin donuts
 	var nearestPlaceId = null;
@@ -35,7 +41,6 @@ class donutappView extends Ui.WatchFace {
 	// Load your resources here
 	function onLayout(dc) {
 		setLayout(Rez.Layouts.MainLayout(dc));
-		myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
 	}
 
 	// Called when this View is brought to the foreground. Restore
@@ -46,6 +51,26 @@ class donutappView extends Ui.WatchFace {
 
 	// Update the view
 	function onUpdate(dc) {
+		// Update the clock portion of the screen
+		var view = View.findDrawableById("TimeLabel");
+		view.setColor(Gfx.COLOR_WHITE);
+		view.setText(getTimeString());
+		
+		// Update the Donuts portion of the screen
+		var donutsDrawable = View.findDrawableById("Donuts");
+		var numDonuts = convertMetersToDonuts(metersToNearest);
+		donutsDrawable.setDonutsBurned(numDonuts);
+		donutsDrawable.draw(dc);
+		
+		// Update the Distance portion of the screen
+		updateDistance();
+		drawDistance();
+		
+		// Call the parent onUpdate function to redraw the layout
+		View.onUpdate(dc);
+	}
+	
+	function getTimeString() {
 		// Get the current time and format it correctly
 		var timeFormat = "$1$:$2$";
 		var clockTime = Sys.getClockTime();
@@ -60,52 +85,15 @@ class donutappView extends Ui.WatchFace {
 				hours = hours.format("%02d");
 			}
 		}
-		var timeString = Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
-
-		// Update the view
-		var view = View.findDrawableById("TimeLabel");
-		view.setColor(Gfx.COLOR_WHITE);
-		view.setText(timeString);
 		
-		updateDistance();
-
-		drawDistance();
-		
-		// Call the parent onUpdate function to redraw the layout
-		View.onUpdate(dc);
-
-		var calories = convertToCalories(metersToNearest);
-		drawDonuts(dc, calories);
+		return Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
 	}
 	
-	function convertToCalories(meters) {
-		// In one meter of running, the average american burns 0.07831 calories.
-		var caloriesLost = (meters * 0.07831).toNumber();
-		return caloriesLost > 0 ? caloriesLost : 0;
+	function convertMetersToDonuts(meters) {
+		var numDonuts = meters * DONUTS_PER_METER;
+		return numDonuts > 0 ? numDonuts : 0;
 	}
 
-	function drawDonuts(dc, calories){
-		var donutCount = calories / 200; //Divides by 200 to find out how many full donuts you've burned in calories.
-		var numDisplayed = 0;
-		var numPerRow = 4;
-		var LEFT_BUFFER = 5;
-		var TOP_BUFFER = 50;
-		var SPACE = 5;
-		var ICON_SIZE = 30;
-		
-		//Rounds to the next donut if you are 15 or less calories away from 200 burned.
-		if((calories % 200) >= 185){
-			donutCount += 1;
-		}
-		
-		for(var r = 0; numDisplayed < donutCount; r++){
-			for(var c = 0; c < numPerRow && numDisplayed < donutCount; c++){
-				dc.drawBitmap(LEFT_BUFFER + (c * (ICON_SIZE + SPACE)), TOP_BUFFER + (r * (ICON_SIZE + SPACE)), myDonutIcon);
-				numDisplayed++;
-			}
-		}
-	}
-	
 	function updateDistance() {
 		if(!hasPosition()) {
 			Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method( :positionCallback ) );
@@ -316,8 +304,8 @@ class donutappView extends Ui.WatchFace {
 			return;
 		}
 		
+		// Set the color of the text based on if it's open or nah
 		if(isOpen) {
-			// Set the color of the text based on if it's open or nah
 			distanceView.setColor(App.getApp().getProperty("OpenStoreColor"));
 		} else {
 			distanceView.setColor(App.getApp().getProperty("ClosedStoreColor"));
