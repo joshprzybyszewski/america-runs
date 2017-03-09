@@ -9,10 +9,10 @@ using Toybox.Timer as Timer;
 class donutappView extends Ui.WatchFace {
 	// A good response from a server is 200
 	const OK_RESPONSE_CODE = 200;
-	// Recheck for the nearest Dunkin Donuts every minute (60,000 milliseconds)
+	// Recheck for the nearest Dunkin Donuts every 15 seconds (15,000 milliseconds)
 	const CHECK_FOR_DD_TIME_MS = 15000;
 	// The google API key to request the nearby and distance matrix
-	const API_KEY = "AIzaSyDik3mzkY4f5yXnUkbSNi6eQtSL1haQ_sU";
+	const API_KEY = "";
 	var myDonutIcon;
 
 	// The Google place_id of the nearest dunkin donuts
