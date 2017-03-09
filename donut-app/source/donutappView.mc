@@ -4,10 +4,15 @@ using Toybox.System as Sys;
 using Toybox.Lang as Lang;
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
+using Toybox.Timer as Timer;
 
 class donutappView extends Ui.WatchFace {
 	// A good response from a server is 200
 	const OK_RESPONSE_CODE = 200;
+	// Recheck for the nearest Dunkin Donuts every minute (60,000 milliseconds)
+	const CHECK_FOR_DD_TIME_MS = 15000;
+	// The google API key to request the nearby and distance matrix
+	const API_KEY = "";
 	var myDonutIcon;
 
 	// The Google place_id of the nearest dunkin donuts
@@ -20,6 +25,8 @@ class donutappView extends Ui.WatchFace {
 	var metersToNearest = -1;
 	// A 2D array of location. (i.e. [latitude, longitude]);
 	var posDegrees = null;
+	
+	var DDTimer = null;
 	
 	function initialize() {
 		WatchFace.initialize();
@@ -67,6 +74,7 @@ class donutappView extends Ui.WatchFace {
 		// Call the parent onUpdate function to redraw the layout
 		View.onUpdate(dc);
 
+		metersToNearest = 3200;
 		var calories = convertToCalories(metersToNearest);
 		drawDonuts(dc, calories);
 	}
@@ -100,52 +108,71 @@ class donutappView extends Ui.WatchFace {
 	}
 	
 	function updateDistance() {
-		if(posDegrees == null || posDegrees.size() != 2) {
-			getPosition();
-		} else if(nearestPlaceId == null) {
-			requestNearestDunkin();	
-		} else if(textToNearest == null || metersToNearest < 0){
-			requestDistanceMatrix();
+		if(!hasPosition()) {
+			Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method( :positionCallback ) );
+		}
+		
+		if(DDTimer == null) {
+			DDTimer = new Timer.Timer();
+			DDTimer.start(method( :requestNearestDunkin ), CHECK_FOR_DD_TIME_MS, true);
+		
+			// Execute this now, so that we don't have to wait a bit for the first call.
+			requestNearestDunkin(); 
 		}
 	}
 	
-	function getPosition() {
-		Position.enableLocationEvents(Position.LOCATION_ONE_SHOT, method( :onPosition ) );
+	function positionCallback(info) {
+		System.println("Updating position to " + info.position.toDegrees());
+		posDegrees = info.position.toDegrees();
+    }
+	
+	// Utility returns true when we have a position measurement stored in posDegrees
+	function hasPosition() {
+		return posDegrees != null && posDegrees.size() == 2;
 	}
 	
-	function onPosition(info) {
-		posDegrees = info.position.toDegrees();
-		
-		WatchUi.requestUpdate();
-    }
+	// Utility returns true when we have a place id for the nearest Dunkin
+	function hasNearest() {
+		return nearestPlaceId != null;
+	}
+	
+	// Use this variable to rate limit my google maps API calls...
+    var webRequests = 0;
     
     function requestNearestDunkin(){
-    	// Make sure we have the information needed to get the nearest dunkin donuts
-		if(posDegrees == null || posDegrees.size() != 2) {
-			// We don't know where we are
+    	// Make sure we have the current GPS coords needed to calculate the nearest dunkin donuts
+		if(!hasPosition()) {
+			// We don't know where we are, so find out.
 			getPosition();
 			return;
 		}
-		// Leave this in until I find a better way to query Google
-		textToNearest = "we broke it";
-		return;
+		
+		// START TEMPORARY SOLUTION //
+		if (webRequests < 10) {
+		System.println("Requesting nearby");
+		//////////////////////////////
 		
 		Comm.makeWebRequest( 
 			"https://maps.googleapis.com/maps/api/place/nearbysearch/json", 
 			{"location" => posDegrees[0] + "," + posDegrees[1],
 				"radius" => "10000",
-				"type"=>"restaurant",
-				"name"=>"dunkin+donuts",
-				"key"=>"AIzaSyCJFmPmNE90XKmHWIyZ3_rKHLs_arymZ_Q"},
+				"type" => "restaurant",
+				"name" => "dunkin+donuts",
+				"key" => API_KEY},
 			{:method => Comm.HTTP_REQUEST_METHOD_GET, 
 				:responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON}, 
 			method(:nearbySearchCallback)
 		);
+		
+		// END TEMP SOLUTION //
+		webRequests++;
+		}
+		///////////////////////
 	}
     
 	function nearbySearchCallback(responseCode, data) {
 		// Documentation for nearby search here: https://developers.google.com/places/web-service/search#PlaceSearchResponses
-		if(checkResponse(responseCode, data) ) {
+		if(isBadResponse(responseCode, data) ) {
 			nearestPlaceId = null;
 			isOpen = false;
 			textToNearest = "None nearby";
@@ -163,7 +190,7 @@ class donutappView extends Ui.WatchFace {
 		var closestDunkin = null;
 		for(var i = 0; i < results.size(); i++) {
 			if((results[i]["name"]).find("Dunkin' Donuts") != null) {
-				//I think this is actually a dunkin!
+				//I think this is actually a dunkin, because the name contains Dunkin' Donuts
 				closestDunkin = results[i];
 				break;
 			} 
@@ -174,46 +201,6 @@ class donutappView extends Ui.WatchFace {
 			// No nearby "for sure" dunkins :(
 			nearestPlaceId = null;
 			isOpen = false;
-			
-			return false;
-		}
-		
-		nearestPlaceId = closestDunkin["place_id"];
-		isOpen = closestDunkin["opening_hours"]["open_now"];
-		
-		WatchUi.requestUpdate();
-		
-		return true;
-	}
-	
-	function requestDistanceMatrix() {
-		// Make sure we have the needed information for the request
-		if(posDegrees == null || posDegrees.size() != 2) {
-			// We don't know where we are
-			getPosition();
-			return;
-		} else if(nearestPlaceId == null) {
-			// We don't know where we're going
-			requestNearestDunkin();
-			return;
-		}
-		
-		Comm.makeWebRequest( 
-			"https://maps.googleapis.com/maps/api/distancematrix/json",
-			{"units" => "imperial",
-				"origins" => posDegrees[0] + "," + posDegrees[1],
-				"destinations" => "place_id:" + nearestPlaceId,
-				"mode" => "walking",
-				"key" => "AIzaSyCJFmPmNE90XKmHWIyZ3_rKHLs_arymZ_Q"},
-			{:method => Comm.HTTP_REQUEST_METHOD_GET, 
-				:responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON}, 
-			method(:distanceMatrixCallback)
-		);
-	}
-
-	function distanceMatrixCallback(responseCode, data) {
-		// Documentation here: https://developers.google.com/maps/documentation/distance-matrix/intro#DistanceMatrixRequests
-		if(checkResponse(responseCode, data) ) {
 			textToNearest = "None nearby";
 			metersToNearest = -1;
 			
@@ -221,20 +208,73 @@ class donutappView extends Ui.WatchFace {
 			
 			return false;
 		}
-
-		var textValuePair = data["rows"][0]["elements"][0]["distance"];
-		textToNearest = textValuePair["text"];
-		metersToNearest = textValuePair["value"];
 		
-		WatchUi.requestUpdate();
+		nearestPlaceId = closestDunkin["place_id"];
+		isOpen = closestDunkin["opening_hours"]["open_now"];
+		
+		// We call this after setting the nearest dunkin so that we can request how far away it is.
+		requestDistanceMatrix();
 		
 		return true;
 	}
 	
-	function checkResponse(responseCode, data) {
+	function requestDistanceMatrix() {
+		// Make sure we have the needed information for the request
+		if(!hasPosition()) {
+			// We don't know where we are
+			getPosition();
+			return;
+		} else if(!hasNearestDunkin()) {
+			// We don't know where we're going
+			requestNearestDunkin();
+			return;
+		}
+		
+		// START TEMPORARY SOLUTION //
+		if (webRequests < 10) {
+		System.println("Requesting distance matrix");
+		//////////////////////////////
+		
+		Comm.makeWebRequest( 
+			"https://maps.googleapis.com/maps/api/distancematrix/json",
+			{"units" => "imperial",
+				"origins" => posDegrees[0] + "," + posDegrees[1],
+				"destinations" => "place_id:" + nearestPlaceId,
+				"mode" => "walking",
+				"key" => API_KEY},
+			{:method => Comm.HTTP_REQUEST_METHOD_GET, 
+				:responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON}, 
+			method(:distanceMatrixCallback)
+		);
+		
+		// END TEMP SOLUTION //
+		webRequests++;
+		}
+		///////////////////////
+	}
+
+	// Documentation for distance matrix responses here: https://developers.google.com/maps/documentation/distance-matrix/intro#DistanceMatrixRequests
+	function distanceMatrixCallback(responseCode, data) {
+		var gotGoodResponse = !isBadResponse(responseCode, data); 
+
+		if(gotGoodResponse) {
+			var textValuePair = data["rows"][0]["elements"][0]["distance"];
+			textToNearest = textValuePair["text"];
+			metersToNearest = textValuePair["value"];			
+		} else {
+			textToNearest = "None nearby";
+			metersToNearest = -1;
+		}
+
+		WatchUi.requestUpdate();
+		
+		return gotGoodResponse;
+	}
+	
+	function isBadResponse(responseCode, data) {
 		if(responseCode != OK_RESPONSE_CODE) {
 			System.println("Response Code was: " + responseCode);
-			return 1;
+			return true;
 		}
 		// The status returned in the json from Google
 		// This has the same return values for both distance request matrices and nearby searches
@@ -259,10 +299,10 @@ class donutappView extends Ui.WatchFace {
 				System.println("duh ffffuuuu??? " + status);
 			}
 			System.println("data: " + data);			
-			return 1;
+			return true;
 		}
 		
-		return 0;
+		return false;
 	}
 	
 	function drawDistance() {
