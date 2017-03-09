@@ -25,7 +25,7 @@ class donutappView extends Ui.WatchFace {
 	var metersToNearest = -1;
 	// A 2D array of location. (i.e. [latitude, longitude]);
 	var posDegrees = null;
-	
+	// The timer that requests the nearest dunkin to our last known location every CHECK_FOR_DD_TIME_MS milliseconds
 	var DDTimer = null;
 	
 	function initialize() {
@@ -74,7 +74,6 @@ class donutappView extends Ui.WatchFace {
 		// Call the parent onUpdate function to redraw the layout
 		View.onUpdate(dc);
 
-		metersToNearest = 3200;
 		var calories = convertToCalories(metersToNearest);
 		drawDonuts(dc, calories);
 	}
@@ -196,26 +195,24 @@ class donutappView extends Ui.WatchFace {
 			} 
 			// Otherwise I don't think this is actually a dunkin. Find another
 		}
+
+		if(closestDunkin != null) {
+			nearestPlaceId = closestDunkin["place_id"];
+			isOpen = closestDunkin["opening_hours"]["open_now"];
 		
-		if(closestDunkin == null) {
+			// We call this after setting the nearest dunkin so that we can request how far away it is.
+			requestDistanceMatrix();
+		} else {
 			// No nearby "for sure" dunkins :(
 			nearestPlaceId = null;
 			isOpen = false;
 			textToNearest = "None nearby";
 			metersToNearest = -1;
-			
+
 			WatchUi.requestUpdate();
-			
-			return false;
 		}
 		
-		nearestPlaceId = closestDunkin["place_id"];
-		isOpen = closestDunkin["opening_hours"]["open_now"];
-		
-		// We call this after setting the nearest dunkin so that we can request how far away it is.
-		requestDistanceMatrix();
-		
-		return true;
+		return closestDunkin != null;
 	}
 	
 	function requestDistanceMatrix() {
