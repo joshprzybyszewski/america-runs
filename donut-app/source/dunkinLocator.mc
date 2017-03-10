@@ -74,21 +74,21 @@ class DunkinLocator {
 		requestNearestDunkin();
 	}
 	
+	// Updates the position variable according to the info
 	function gotPositionCallback(info) {
 		System.println("Updating position to " + info.position.toDegrees());
 		posDegrees = info.position.toDegrees();
     }
     
+    // Signals that this locator should cease listening to location NOR should it periodically look for the nearest Dunkin
     function stopListening() {
-		Position.enableLocationEvents(Position.LOCATION_DISABLE, method( :disablePositionCallback ) );
+		Position.enableLocationEvents(Position.LOCATION_DISABLE, null);
 		posDegrees = null;
 		
-		requestTimer.stop();
+		if(requestTimer != null) {
+			requestTimer.stop();
+		}
 		requestTimer = null;
-	}
-	
-	function disablePositionCallback(info) {
-		posDegrees = null;
 	}
 	
 	// Utility returns true when we have a position measurement stored in posDegrees
@@ -96,14 +96,11 @@ class DunkinLocator {
 		return posDegrees != null && posDegrees.size() == 2;
 	}
 	
-	// Utility returns true when we have a place id for the nearest Dunkin
-	function hasNearestDunkin() {
-		return nearestPlaceId != null;
-	}
-	
 	// Use this variable to rate limit my google maps API calls...
     var webRequests = 0;
     
+    // Ask Google Nearby Search to find the nearest Dunkin Donuts
+    // Documentation for nearby search here: https://developers.google.com/places/web-service/search#PlaceSearchResponses
     function requestNearestDunkin() {
     	// Make sure we have the current GPS coords needed to calculate the nearest dunkin donuts
 		if(!hasPosition()) {
@@ -135,8 +132,8 @@ class DunkinLocator {
 		///////////////////////
 	}
     
+    // Check the response and parse the returned data
 	function nearbySearchCallback(responseCode, data) {
-		// Documentation for nearby search here: https://developers.google.com/places/web-service/search#PlaceSearchResponses
 		if(isBadResponse(responseCode, data) ) {
 			nearestPlaceId = null;
 			
@@ -185,13 +182,14 @@ class DunkinLocator {
 		return closestDunkin != null;
 	}
 	
+	// Ask Google Distance Matrix for the fastest way walking to the nearest Dunkin
+	// Documentation for distance matrix responses here: https://developers.google.com/maps/documentation/distance-matrix/intro#DistanceMatrixRequests
 	function requestDistanceMatrix() {
 		// Make sure we have the needed information for the request
 		if(!hasPosition()) {
 			// We don't know where we are
-			System.println("Where the heck are we? PLZ tell me");
 			return;
-		} else if(!hasNearestDunkin()) {
+		} else if(nearestPlaceId == null) {
 			// We don't know where we're going
 			requestNearestDunkin();
 			return;
@@ -220,7 +218,7 @@ class DunkinLocator {
 		///////////////////////
 	}
 
-	// Documentation for distance matrix responses here: https://developers.google.com/maps/documentation/distance-matrix/intro#DistanceMatrixRequests
+	// Check the response and parse the returned data
 	function distanceMatrixCallback(responseCode, data) {
 		var gotGoodResponse = !isBadResponse(responseCode, data); 
 
@@ -229,6 +227,8 @@ class DunkinLocator {
 			text = textValuePair["text"];
 			donuts = convertMetersToDonuts(textValuePair["value"]);	
 		} else {
+			// Don't set isOpen because there wasn't an error with determining whether it is open or not
+			// the error occurred when trying to find the shortest path there.
 			text = "Error w/ Path";
 			donuts = 0;
 		}
@@ -238,11 +238,13 @@ class DunkinLocator {
 		return gotGoodResponse;
 	}
 	
+	// Utility to give the donut equivalent of the given meters measurement
 	function convertMetersToDonuts(meters) {
 		var numDonuts = meters * DONUTS_PER_METER;
 		return numDonuts > 0 ? numDonuts : 0;
 	}
 	
+	// Returns true if there is a bad response code or if the data returned an error.
 	function isBadResponse(responseCode, data) {
 		if(responseCode != OK_RESPONSE_CODE) {
 			System.println("Response Code was: " + responseCode);
