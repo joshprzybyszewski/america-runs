@@ -2,7 +2,6 @@ using Toybox.Application as App;
 using Toybox.WatchUi as Ui;
 
 class donutappApp extends App.AppBase {
-
     function initialize() {
         AppBase.initialize();
     }
@@ -24,5 +23,4 @@ class donutappApp extends App.AppBase {
     function onSettingsChanged() {
         Ui.requestUpdate();
     }
-
 }
