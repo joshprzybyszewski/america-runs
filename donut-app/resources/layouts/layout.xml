@@ -4,5 +4,5 @@
     <drawable id="Donuts" class="MultipleDonutsDrawable">
     	<param name="numBurned">0</param>
     </drawable>
-    <label id="DistanceLabel" x="center" y="165" font="Gfx.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" />
+    <label id="DistanceLabel" x="center" y="center" font="Gfx.FONT_LARGE" justification="Gfx.TEXT_JUSTIFY_CENTER" />
 </layout>

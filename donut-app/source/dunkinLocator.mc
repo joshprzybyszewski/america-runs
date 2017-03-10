@@ -68,7 +68,7 @@ class DunkinLocator {
 		}
 		
 		requestTimer = new Timer.Timer();
-		requestTimer.start(method( :requestNearestDunkin ), TIME_BTWN_RQST, true);
+		requestTimer.start(method(:requestNearestDunkin), TIME_BTWN_RQST, true);
 
 		// Execute this now, so that we don't have to wait a bit for the first call.
 		requestNearestDunkin();

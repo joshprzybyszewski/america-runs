@@ -1,5 +1,6 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Math as Math;
+using Toybox.Application as App;
 
 class MultipleDonutsDrawable extends Ui.Drawable {
 	// The number of donuts that we are going to draw
@@ -21,22 +22,22 @@ class MultipleDonutsDrawable extends Ui.Drawable {
 	function draw(dc) {
 		var donutCount = Math.floor(numBurned);
 		var numDisplayed = 0;
-		var numPerRow = 4;
-		var LEFT_BUFFER = 5;
-		var TOP_BUFFER = 50;
-		var SPACE = 5;
-		var ICON_SIZE = 30;
+		
+		var NUM_PER_ROW = App.getApp().getProperty("donutsPerRow");
+		var X_OFFSET = App.getApp().getProperty("leftOffset");
+		var X_BUFFER = App.getApp().getProperty("horizontalBuffer");
+		var Y_OFFSET = App.getApp().getProperty("topOffset");
+		var Y_BUFFER = App.getApp().getProperty("verticalBuffer");
+		var ICON_SIZE = App.getApp().getProperty("iconSize");
 		
 		//Rounds to the next donut if you are 15 or less calories away from 200 burned.
 		if((numBurned - donutCount) >= 0.7){
 			donutCount += 1;
 		}
 		
-		System.println("drawing " + donutCount + " donuts");
-		
 		for(var r = 0; numDisplayed < donutCount; r++){
-			for(var c = 0; c < numPerRow && numDisplayed < donutCount; c++){
-				dc.drawBitmap(LEFT_BUFFER + (c * (ICON_SIZE + SPACE)), TOP_BUFFER + (r * (ICON_SIZE + SPACE)), myDonutIcon);
+			for(var c = 0; (c < NUM_PER_ROW) && (numDisplayed < donutCount); c++){
+				dc.drawBitmap(X_OFFSET + (c * (ICON_SIZE + X_BUFFER)), Y_OFFSET + (r * (ICON_SIZE + Y_BUFFER)), myDonutIcon);
 				numDisplayed++;
 			}
 		}

@@ -29,9 +29,7 @@ class donutappView extends Ui.WatchFace {
 	// Update the view
 	function onUpdate(dc) {
 		// Update the clock portion of the screen
-		var timeLabel = View.findDrawableById("TimeLabel");
-		timeLabel.setColor(Gfx.COLOR_WHITE);
-		timeLabel.setText(getTimeString());
+		updateTimeLabel();
 		
 		// Update the Donuts portion of the screen
 		var donutsDrawable = View.findDrawableById("Donuts");
@@ -39,12 +37,21 @@ class donutappView extends Ui.WatchFace {
 		donutsDrawable.draw(dc);
 		
 		// Update the Distance portion of the screen
-		var distanceLabel = View.findDrawableById("DistanceLabel");
-		distanceLabel.setColor(dunkinLocator.getTextColor());
-		distanceLabel.setText(dunkinLocator.getText());
+		updateDistanceLabel();
 		
 		// Call the parent onUpdate function to redraw the layout
 		View.onUpdate(dc);
+	}
+	
+	function updateTimeLabel() {
+		var timeLabel = View.findDrawableById("TimeLabel");
+		
+		var center = App.getApp().getProperty("screenWidth") / 2;
+		var y = App.getApp().getProperty("topClockOffset");
+		timeLabel.setLocation(center, y);
+		
+		timeLabel.setColor(Gfx.COLOR_WHITE);
+		timeLabel.setText(getTimeString());
 	}
 	
 	function getTimeString() {
@@ -55,6 +62,8 @@ class donutappView extends Ui.WatchFace {
 		if (!Sys.getDeviceSettings().is24Hour) {
 			if (hours > 12) {
 				hours = hours - 12;
+			} else if (hours == 0) {
+				hours = 12;
 			}
 		} else {
 			if (App.getApp().getProperty("UseMilitaryFormat")) {
@@ -64,6 +73,19 @@ class donutappView extends Ui.WatchFace {
 		}
 		
 		return Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
+	}
+	
+	function updateDistanceLabel() {
+		var distanceLabel = View.findDrawableById("DistanceLabel");
+		
+		var center = App.getApp().getProperty("screenWidth") / 2;
+		var y = App.getApp().getProperty("screenHeight") 
+				- App.getApp().getProperty("topOffset") 
+				+ App.getApp().getProperty("topClockOffset");
+		distanceLabel.setLocation(center, y);
+		
+		distanceLabel.setColor(dunkinLocator.getTextColor());
+		distanceLabel.setText(dunkinLocator.getText());
 	}
 	
 	// Called when this View is removed from the screen. Save the
