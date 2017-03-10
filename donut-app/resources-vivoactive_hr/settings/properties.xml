@@ -1,6 +1,6 @@
 <properties>
-    <property id="screenHeight" type="number">205</property>
     <property id="screenWidth" type="number">148</property>
+    <property id="screenHeight" type="number">205</property>
     
     <property id="topClockOffset" type="number">10</property>
     

@@ -1,8 +1,8 @@
-using Toybox.WatchUi as Ui;
-using Toybox.Graphics as Gfx;
-using Toybox.System as Sys;
-using Toybox.Lang as Lang;
 using Toybox.Application as App;
+using Toybox.Graphics as Gfx;
+using Toybox.Lang as Lang;
+using Toybox.System as Sys;
+using Toybox.WatchUi as Ui;
 
 class donutappView extends Ui.WatchFace {
 	// A helper class that keeps track of our nearest store and updates that periodically	
@@ -13,7 +13,7 @@ class donutappView extends Ui.WatchFace {
 		
 		dunkinLocator = new DunkinLocator();
 	}
-	
+
 	// Load your resources here
 	function onLayout(dc) {
 		setLayout(Rez.Layouts.MainLayout(dc));
@@ -28,15 +28,8 @@ class donutappView extends Ui.WatchFace {
 
 	// Update the view
 	function onUpdate(dc) {
-		// Update the clock portion of the screen
 		updateTimeLabel();
-		
-		// Update the Donuts portion of the screen
-		var donutsDrawable = View.findDrawableById("Donuts");
-		donutsDrawable.setDonutsBurned(dunkinLocator.getDonuts());
-		donutsDrawable.draw(dc);
-		
-		// Update the Distance portion of the screen
+		updateDonutsDrawable(dc);
 		updateDistanceLabel();
 		
 		// Call the parent onUpdate function to redraw the layout
@@ -75,14 +68,22 @@ class donutappView extends Ui.WatchFace {
 		return Lang.format(timeFormat, [hours, clockTime.min.format("%02d")]);
 	}
 	
+	function updateDonutsDrawable(dc) {
+		var donutsDrawable = View.findDrawableById("Donuts");
+		donutsDrawable.setDonutsBurned(dunkinLocator.getDonuts());
+		donutsDrawable.draw(dc);
+	}
+	
 	function updateDistanceLabel() {
 		var distanceLabel = View.findDrawableById("DistanceLabel");
 		
 		var center = App.getApp().getProperty("screenWidth") / 2;
-		var y = App.getApp().getProperty("screenHeight") 
+		// Let's put the label near the bottom of the screen, but not too close.
+		// This could be improved in the future, but it's aight for now.
+		var top = App.getApp().getProperty("screenHeight") 
 				- App.getApp().getProperty("topOffset") 
 				+ App.getApp().getProperty("topClockOffset");
-		distanceLabel.setLocation(center, y);
+		distanceLabel.setLocation(center, top);
 		
 		distanceLabel.setColor(dunkinLocator.getTextColor());
 		distanceLabel.setText(dunkinLocator.getText());

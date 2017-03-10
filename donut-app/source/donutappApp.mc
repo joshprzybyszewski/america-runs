@@ -1,9 +1,5 @@
 using Toybox.Application as App;
 using Toybox.WatchUi as Ui;
-using Toybox.Graphics as Gfx;
-using Toybox.System as Sys;
-using Toybox.Lang as Lang;
-using Toybox.Communications as Comm;
 
 class donutappApp extends App.AppBase {
     function initialize() {

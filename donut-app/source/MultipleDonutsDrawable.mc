@@ -1,6 +1,6 @@
-using Toybox.WatchUi as Ui;
-using Toybox.Math as Math;
 using Toybox.Application as App;
+using Toybox.Math as Math;
+using Toybox.WatchUi as Ui;
 
 class MultipleDonutsDrawable extends Ui.Drawable {
 	// The number of donuts that we are going to draw

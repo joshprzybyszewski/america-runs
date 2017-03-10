@@ -1,8 +1,8 @@
-using Toybox.WatchUi as Ui;
-using Toybox.Timer as Timer;
-using Toybox.Communications as Comm;
 using Toybox.Application as App;
+using Toybox.Communications as Comm;
 using Toybox.Graphics as Gfx;
+using Toybox.Timer as Timer;
+using Toybox.WatchUi as Ui;
 
 class DunkinLocator {
 	// A good response from a server is 200
@@ -10,17 +10,18 @@ class DunkinLocator {
 	// Recheck for the nearest Dunkin Donuts every 15 seconds (15,000 milliseconds)
 	const TIME_BTWN_RQST = 15000;
 	// The google API key to request the nearby and distance matrix
+	//  Unless you're me (the developer), you don't get to know my key.
+	//  I'm trying to keep it off github, help me out will ya?
 	const API_KEY = "";
-	// The average donut has 200 calories in it
-	const CALORIES_PER_DONUT = 200;
-	// In one meter of running, the average american burns 0.07831 calories.
-	const CALORIES_PER_METER = 0.07831;
-	// Just calculate this up here. Cool.
-	const DONUTS_PER_METER = CALORIES_PER_METER / CALORIES_PER_DONUT;
+	// The average number of donuts burned per kilometer
+	//  The average person burns 78.31 calories per km
+	//  The average donut has 200 calories
+	const DONUTS_PER_KM = 0.39155;
 
 	// Whether or not the nearest Dunkin is open or not. Defaults to false
 	hidden var isOpen = false;
 	// The text phrase to the nearest Dunkin (i.e. "6.1mi")
+	//  Will be null when we don't have a nearby and we're looking
 	hidden var text = null;
 	// The number of donuts burned getting to the nearest Dunkin
 	hidden var donuts = 0;
@@ -29,10 +30,11 @@ class DunkinLocator {
 	hidden var nearestPlaceId = null;
 	// A 2D array of location. (i.e. [latitude, longitude]);
 	hidden var posDegrees = null;
-	// The timer that requests the nearest dunkin to our last known location every CHECK_FOR_DD_TIME_MS milliseconds
+	// The timer that requests the nearest dunkin to our last known location every TIME_BTWN_RQST milliseconds
 	hidden var requestTimer = null;
 	
 	// Returns the color that the text should be 
+	//  Yellow when searching, Green if the store is open, Red if the store is closed
 	function getTextColor() {
 		if(text == null) {
 			return Gfx.COLOR_YELLOW;
@@ -51,7 +53,7 @@ class DunkinLocator {
 		return text;
 	}
 	
-	// Returns the number of donuts consumed along the way to the nearest Dunkin. Not an integer
+	// Returns the number of donuts consumed along the way to the nearest Dunkin. Not necessarily an integer
 	function getDonuts() {
 		return donuts;
 	}
@@ -142,8 +144,6 @@ class DunkinLocator {
 			donuts = 0;
 
 			Ui.requestUpdate();
-			
-			return false;
 		}
 		
 		// An Array of the nearby Dunkin Donuts restaurants. 
@@ -164,7 +164,6 @@ class DunkinLocator {
 			nearestPlaceId = closestDunkin["place_id"];
 		
 			isOpen = closestDunkin["opening_hours"]["open_now"];
-			text = "Calculating...";
 
 			// We call this after setting the nearest dunkin so that we can request how far away it is.
 			requestDistanceMatrix();
@@ -178,8 +177,6 @@ class DunkinLocator {
 		}
 
 		Ui.requestUpdate();
-		
-		return closestDunkin != null;
 	}
 	
 	// Ask Google Distance Matrix for the fastest way walking to the nearest Dunkin
@@ -234,13 +231,11 @@ class DunkinLocator {
 		}
 
 		Ui.requestUpdate();
-		
-		return gotGoodResponse;
 	}
 	
 	// Utility to give the donut equivalent of the given meters measurement
 	function convertMetersToDonuts(meters) {
-		var numDonuts = meters * DONUTS_PER_METER;
+		var numDonuts = (meters / 1000) * DONUTS_PER_KM;
 		return numDonuts > 0 ? numDonuts : 0;
 	}
 	
