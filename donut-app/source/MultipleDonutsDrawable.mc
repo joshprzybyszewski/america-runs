@@ -2,7 +2,9 @@ using Toybox.WatchUi as Ui;
 using Toybox.Math as Math;
 
 class MultipleDonutsDrawable extends Ui.Drawable {
+	// The number of donuts that we are going to draw
 	hidden var numBurned;
+	// The icon from the Rez.Drawables that is a donut bitmap
 	hidden var myDonutIcon;
 	
 	function initialize(params) {
@@ -12,8 +14,8 @@ class MultipleDonutsDrawable extends Ui.Drawable {
 		myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
 	}
 	
-	function setDonutsBurned(newVal) {
-		numBurned = newVal;
+	function setDonutsBurned(numDonuts) {
+		numBurned = numDonuts > 0 ? numDonuts : 0;
 	}
 	
 	function draw(dc) {
