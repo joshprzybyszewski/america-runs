@@ -1,18 +1,11 @@
 using Toybox.Application as App;
-using Toybox.Communications as Comm;
 using Toybox.Graphics as Gfx;
 using Toybox.Timer as Timer;
 using Toybox.WatchUi as Ui;
 
 class DunkinLocator {
-	// A good response from a server is 200
-	const OK_RESPONSE_CODE = 200;
 	// Recheck for the nearest Dunkin Donuts every 15 seconds (15,000 milliseconds)
 	const TIME_BTWN_RQST = 15000;
-	// The google API key to request the nearby and distance matrix
-	//  Unless you're me (the developer), you don't get to know my key.
-	//  I'm trying to keep it off github, help me out will ya?
-	const API_KEY = "";
 	// The average number of donuts burned per kilometer
 	//  The average person burns 78.31 calories per km
 	//  The average donut has 200 calories
@@ -23,15 +16,15 @@ class DunkinLocator {
 	// The text phrase to the nearest Dunkin (i.e. "6.1mi")
 	//  Will be null when we don't have a nearby and we're looking
 	hidden var text = null;
-	// The number of donuts burned getting to the nearest Dunkin
-	hidden var donuts = 0;
+	// The number of meters to the nearest Dunkin
+	hidden var meters = 0;
 
-	// The Google place_id of the nearest dunkin donuts
-	hidden var nearestPlaceId = null;
 	// A 2D array of location. (i.e. [latitude, longitude]);
 	hidden var posDegrees = null;
 	// The timer that requests the nearest dunkin to our last known location every TIME_BTWN_RQST milliseconds
 	hidden var requestTimer = null;
+	// The object used to get the nearest Dunkin
+	hidden var storeFinder = null;
 	
 	// Returns the color that the text should be 
 	//  Yellow when searching, Green if the store is open, Red if the store is closed
@@ -55,12 +48,30 @@ class DunkinLocator {
 	
 	// Returns the number of donuts consumed along the way to the nearest Dunkin. Not necessarily an integer
 	function getDonuts() {
-		return donuts;
+		var numDonuts = meters * DONUTS_PER_KM / 1000.0;
+		return numDonuts > 0 ? numDonuts : 0;
+	}
+	
+	function setText(distanceText) {
+		text = distanceText;
+	}
+	
+	function setIsOpen(openStatus) {
+		isOpen = openStatus;
+	}
+	
+	function setMeters(metersToClosest) {
+		meters = metersToClosest;
 	}
 
 	// Indicates that this locator should begin listening for the user's location and start periodically checking
 	// for the location of the nearest Dunkin
 	function startListening() {
+		if(storeFinder == null) {
+			storeFinder = new GoogleStoreFinder();
+			storeFinder.registerSetters(method(:setText), method(:setMeters), method(:setIsOpen));
+		}
+	
 		if(posDegrees == null) {
 			Position.enableLocationEvents(Position.LOCATION_CONTINUOUS, method( :gotPositionCallback ) );	
 		}
@@ -70,10 +81,10 @@ class DunkinLocator {
 		}
 		
 		requestTimer = new Timer.Timer();
-		requestTimer.start(method(:requestNearestDunkin), TIME_BTWN_RQST, true);
+		requestTimer.start(method(:updateStore), TIME_BTWN_RQST, true);
 
 		// Execute this now, so that we don't have to wait a bit for the first call.
-		requestNearestDunkin();
+		updateStore();
 	}
 	
 	// Updates the position variable according to the info
@@ -98,179 +109,7 @@ class DunkinLocator {
 		return posDegrees != null && posDegrees.size() == 2;
 	}
 	
-	// Use this variable to rate limit my google maps API calls...
-    var webRequests = 0;
-    
-    // Ask Google Nearby Search to find the nearest Dunkin Donuts
-    // Documentation for nearby search here: https://developers.google.com/places/web-service/search#PlaceSearchResponses
-    function requestNearestDunkin() {
-    	// Make sure we have the current GPS coords needed to calculate the nearest dunkin donuts
-		if(!hasPosition()) {
-			// We don't know where we are, so we'll have to wait to find out
-			System.println("Where the heck are we?");
-			return;
-		}
-		
-		// START TEMPORARY SOLUTION //
-		if (webRequests < 10) {
-		System.println("Requesting nearby");
-		//////////////////////////////
-		
-		Comm.makeWebRequest( 
-			"https://maps.googleapis.com/maps/api/place/nearbysearch/json", 
-			{"location" => posDegrees[0] + "," + posDegrees[1],
-				"radius" => "10000",
-				"type" => "restaurant",
-				"name" => "dunkin+donuts",
-				"key" => API_KEY},
-			{:method => Comm.HTTP_REQUEST_METHOD_GET, 
-				:responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON}, 
-			method(:nearbySearchCallback)
-		);
-		
-		// END TEMP SOLUTION //
-		webRequests++;
-		}
-		///////////////////////
-	}
-    
-    // Check the response and parse the returned data
-	function nearbySearchCallback(responseCode, data) {
-		if(isBadResponse(responseCode, data) ) {
-			nearestPlaceId = null;
-			
-			isOpen = false;
-			text = "None nearby";
-			donuts = 0;
-
-			Ui.requestUpdate();
-		}
-		
-		// An Array of the nearby Dunkin Donuts restaurants. 
-		// We know that there are some: If not, then the status returned would be "ZERO_RESULTS"
-		var results = data["results"];
-		
-		var closestDunkin = null;
-		for(var i = 0; i < results.size(); i++) {
-			if((results[i]["name"]).find("Dunkin' Donuts") != null) {
-				//I think this is actually a dunkin, because the name contains Dunkin' Donuts
-				closestDunkin = results[i];
-				break;
-			} 
-			// Otherwise I don't think this is actually a dunkin. Find another
-		}
-
-		if(closestDunkin != null) {
-			nearestPlaceId = closestDunkin["place_id"];
-		
-			isOpen = closestDunkin["opening_hours"]["open_now"];
-
-			// We call this after setting the nearest dunkin so that we can request how far away it is.
-			requestDistanceMatrix();
-		} else {
-			// No nearby "for sure" dunkins :(
-			nearestPlaceId = null;
-			
-			isOpen = false;
-			text = "None nearby";
-			donuts = 0;
-		}
-
-		Ui.requestUpdate();
-	}
-	
-	// Ask Google Distance Matrix for the fastest way walking to the nearest Dunkin
-	// Documentation for distance matrix responses here: https://developers.google.com/maps/documentation/distance-matrix/intro#DistanceMatrixRequests
-	function requestDistanceMatrix() {
-		// Make sure we have the needed information for the request
-		if(!hasPosition()) {
-			// We don't know where we are
-			return;
-		} else if(nearestPlaceId == null) {
-			// We don't know where we're going
-			requestNearestDunkin();
-			return;
-		}
-		
-		// START TEMPORARY SOLUTION //
-		if (webRequests < 10) {
-		System.println("Requesting distance matrix");
-		//////////////////////////////
-		
-		Comm.makeWebRequest( 
-			"https://maps.googleapis.com/maps/api/distancematrix/json",
-			{"units" => "imperial",
-				"origins" => posDegrees[0] + "," + posDegrees[1],
-				"destinations" => "place_id:" + nearestPlaceId,
-				"mode" => "walking",
-				"key" => API_KEY},
-			{:method => Comm.HTTP_REQUEST_METHOD_GET, 
-				:responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON}, 
-			method(:distanceMatrixCallback)
-		);
-		
-		// END TEMP SOLUTION //
-		webRequests++;
-		}
-		///////////////////////
-	}
-
-	// Check the response and parse the returned data
-	function distanceMatrixCallback(responseCode, data) {
-		var gotGoodResponse = !isBadResponse(responseCode, data); 
-
-		if(gotGoodResponse) {
-			var textValuePair = data["rows"][0]["elements"][0]["distance"];
-			text = textValuePair["text"];
-			donuts = convertMetersToDonuts(textValuePair["value"]);	
-		} else {
-			// Don't set isOpen because there wasn't an error with determining whether it is open or not
-			// the error occurred when trying to find the shortest path there.
-			text = "Error w/ Path";
-			donuts = 0;
-		}
-
-		Ui.requestUpdate();
-	}
-	
-	// Utility to give the donut equivalent of the given meters measurement
-	function convertMetersToDonuts(meters) {
-		var numDonuts = (meters / 1000) * DONUTS_PER_KM;
-		return numDonuts > 0 ? numDonuts : 0;
-	}
-	
-	// Returns true if there is a bad response code or if the data returned an error.
-	function isBadResponse(responseCode, data) {
-		if(responseCode != OK_RESPONSE_CODE) {
-			System.println("Response Code was: " + responseCode);
-			return true;
-		}
-		// The status returned in the json from Google
-		// This has the same return values for both distance request matrices and nearby searches
-		var status = data["status"];
-
-		if(status.find("OK") == null) {//status is not OK
-			//There was some kind of error in the query
-			if(status.find("ZERO_RESULTS") != null) {
-				// No nearby Dunkin Donuts :(
-				System.println("There are no results for the query");
-			} else if(status.find("OVER_QUERY_LIMIT") != null) {
-				// You've queried too much...
-				System.println("You've requested too much!");
-			} else if(status.find("REQUEST_DENIED") != null) {
-				// You're probably using a bad key...
-				System.println("Are you using the right API key?");
-			} else if(status.find("INVALID_REQUEST") != null) {
-				// You sent something dumb, you idiot
-				System.println("check yourself. You sent a bad request, fool!");
-			} else {
-				// Unknown error
-				System.println("duh ffffuuuu??? " + status);
-			}
-			System.println("data: " + data);			
-			return true;
-		}
-		
-		return false;
+	function updateStore() {
+		storeFinder.requestNearestDunkin(posDegrees);
 	}
 }

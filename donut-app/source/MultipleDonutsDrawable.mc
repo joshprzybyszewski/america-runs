@@ -8,6 +8,8 @@ class MultipleDonutsDrawable extends Ui.Drawable {
 	// The icon from the Rez.Drawables that is a donut bitmap
 	hidden var myDonutIcon;
 	
+	// Set up this drawable
+	//  I think that this is essentially the constructor
 	function initialize(params) {
 		Drawable.initialize(params);
 		
@@ -15,10 +17,12 @@ class MultipleDonutsDrawable extends Ui.Drawable {
 		myDonutIcon = Ui.loadResource(Rez.Drawables.DonutIcon);
 	}
 	
+	// Use to update the number of donuts on the screen
 	function setDonutsBurned(numDonuts) {
 		numBurned = numDonuts > 0 ? numDonuts : 0;
 	}
 	
+	// Draw a number of donuts on the screen
 	function draw(dc) {
 		var donutCount = Math.floor(numBurned);
 		var numDisplayed = 0;
