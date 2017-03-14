@@ -8,7 +8,7 @@ class GoogleStoreFinder {
 	// The google API key to request the nearby and distance matrix
 	//  Unless you're me (the developer), you don't get to know my key.
 	//  I'm trying to keep it off github, help me out will ya?
-	const API_KEY = "AIzaSyDik3mzkY4f5yXnUkbSNi6eQtSL1haQ_sU";
+	const API_KEY = "";
 	
 	// Use this variable to rate limit my google maps API calls...
     hidden var webRequests = 0;
