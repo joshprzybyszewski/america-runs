@@ -52,14 +52,17 @@ class DunkinLocator {
 		return numDonuts > 0 ? numDonuts : 0;
 	}
 	
+	// Set the text to the nearest Dunkin (i.e. "6.1 mi")
 	function setText(distanceText) {
 		text = distanceText;
 	}
 	
+	// Sets the open status of the nearest dunkin. Use `true` when open, else `false`
 	function setIsOpen(openStatus) {
 		isOpen = openStatus;
 	}
 	
+	// Sets the number of meters to the nearest Dunkin.
 	function setMeters(metersToClosest) {
 		meters = metersToClosest;
 	}

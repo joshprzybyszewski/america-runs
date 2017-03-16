@@ -2,6 +2,7 @@ using Toybox.Application as App;
 using Toybox.Math as Math;
 using Toybox.WatchUi as Ui;
 
+// A drawable in charge of drawing multiple donuts on the screen
 class MultipleDonutsDrawable extends Ui.Drawable {
 	// The number of donuts that we are going to draw
 	hidden var numBurned;
@@ -9,7 +10,6 @@ class MultipleDonutsDrawable extends Ui.Drawable {
 	hidden var myDonutIcon;
 	
 	// Set up this drawable
-	//  I think that this is essentially the constructor
 	function initialize(params) {
 		Drawable.initialize(params);
 		

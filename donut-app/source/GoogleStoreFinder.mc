@@ -2,7 +2,7 @@ using Toybox.Communications as Comm;
 using Toybox.WatchUi as Ui;
 
 // A class used to get the nearest dunkin donuts using the Google API
-class GoogleStoreFinder {
+class GoogleStoreFinder extends StoreFinder {
 	// A good response from a server is 200
 	const OK_RESPONSE_CODE = 200;
 	// The google API key to request the nearby and distance matrix
@@ -10,28 +10,15 @@ class GoogleStoreFinder {
 	//  I'm trying to keep it off github, help me out will ya?
 	const API_KEY = "";
 	
-	// Use this variable to rate limit my google maps API calls...
-    hidden var webRequests = 0;
-    
-    // The Google place_id of the nearest dunkin donuts
+	// Use this variable to rate limit my google maps API calls.
+	//  I only get 2500 a day, so I only want to use a few every test run I do.
+	hidden var webRequests = 0;
+
+	// The Google place_id of the nearest dunkin donuts
 	hidden var nearestPlaceId = null;
 	// A array of 2 elements = [latitude, longitude]
 	hidden var currentPosition = null;
 	
-	// A function call used to set the text to the nearest dunkin
-	hidden var setText;
-	// A function call used to set the meters to the nearets dunkin
-	hidden var setMeters;
-	// A function call to set the open status of the nearest dunkin
-	hidden var setIsOpen;
-	
-	// Set what each of the setters are
-	function registerSetters(textSetter, metersSetter, isOpenSetter) {
-		setText = textSetter;
-		setMeters = metersSetter;
-		setIsOpen = isOpenSetter;
-	}
-    
     // Ask Google Nearby Search to find the nearest Dunkin Donuts to the location posDegrees
     // Documentation for nearby search here: https://developers.google.com/places/web-service/search#PlaceSearchResponses
     function requestNearestDunkin(posDegrees) {
@@ -50,9 +37,6 @@ class GoogleStoreFinder {
 		System.println("Requesting nearby");
 		//////////////////////////////
 		
-		//https://maps.googleapis.com/maps/api/place/nearbysearch/json
-		//?radius=10000&type=restaurant&name=dunkin+donuts&key=API_KEY
-		
 		Comm.makeWebRequest( 
 			"https://maps.googleapis.com/maps/api/place/nearbysearch/json", 
 			{"location" => currentPosition[0] + "," + currentPosition[1],
@@ -70,8 +54,8 @@ class GoogleStoreFinder {
 		}
 		///////////////////////
 	}
-    
-    // Check the response and parse the returned data
+
+	// Check the response and parse the returned data
 	function nearbySearchCallback(responseCode, data) {
 		if(isBadResponse(responseCode, data) ) {
 			nearestPlaceId = null;
@@ -80,6 +64,8 @@ class GoogleStoreFinder {
 			setText.invoke("None nearby");
 
 			Ui.requestUpdate();
+			
+			return;
 		}
 		
 		// An Array of the nearby Dunkin Donuts restaurants. 
@@ -160,8 +146,6 @@ class GoogleStoreFinder {
 			setText.invoke(textValuePair["text"]);
 			setMeters.invoke(textValuePair["value"]);
 		} else {
-			// Don't set isOpen because there wasn't an error with determining whether it is open or not
-			// the error occurred when trying to find the shortest path there.
 			setText.invoke("Error w/ Path");
 			setMeters.invoke(0);
 		}
@@ -170,6 +154,7 @@ class GoogleStoreFinder {
 	}
 	
 	// Returns true if there is a bad response code or if the data returned an error.
+	//  This can be used for responses from the nearby search and distance matrix Google APIs
 	function isBadResponse(responseCode, data) {
 		if(responseCode != OK_RESPONSE_CODE) {
 			System.println("Response Code was: " + responseCode);
