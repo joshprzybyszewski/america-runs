@@ -16,7 +16,7 @@ class StoreFinder {
 	}
 	
 	// Use an API to request the nearest Dunkin to the location posDegrees (the position in degrees)
-	function requestNearestStore(posDegrees) {
+	function requestNearestDunkin(posDegrees) {
 		// Do what you need to do then call the methods to set the text and the meters
 	}
 }

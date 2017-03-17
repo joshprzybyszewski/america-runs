@@ -71,7 +71,7 @@ class DunkinLocator {
 	// for the location of the nearest Dunkin
 	function startListening() {
 		if(storeFinder == null) {
-			storeFinder = new GoogleStoreFinder();
+			storeFinder = new OfflineStoreFinder();
 			storeFinder.registerSetters(method(:setText), method(:setMeters), method(:setIsOpen));
 		}
 	
